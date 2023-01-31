@@ -1,7 +1,7 @@
 #!/bash/bin
 # Author : Michael Major 200422012
 # Title : Challenge Script ( system info )
-# Discription : This script allows the use to gain some system information
+# Discription : This script allows the user to gain some system information
 
 # Start of script
 # Displaying domain name
