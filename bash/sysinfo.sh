@@ -4,18 +4,23 @@
 # Discription : This script allows the user to gain some system information
 
 # Start of script
-# Displaying domain name
-echo -n 'FQDN: '
-hostname
 
-# Displaying operating system information
-echo 'System Info:'
-hostnamectl | grep -v 'Hardware'
+# Title of file / start of template
+echo Report for myvm
+echo "======================="
+
+# Displaying domain name
+
+echo  FQDN: `hostname`
+
+# Displaying Operating system and version
+echo  Operating System name and version: `hostnamectl | grep -w 'Operating'`
 
 # Displaying the main ip address used
-echo 'IP Addresses:'
-ip address | grep -w inet | grep -v 127
+echo IP Addresses: `hostname -I`
 
-# Displaying file system status 
-echo 'Root Filesystem Status:'
-df -h /
+# Displaying file system status
+echo Root Filesystem Free Space: `df -h / | awk '{print $4}' | tail -n 1`
+
+# End of script display
+echo "========================"
