@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Initialize variables
+verbose=""
+interface=""
+
+# Parse command line options
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -v)
+            verbose="yes"
+            ;;
+        *)
+            if [ -z "$interface" ]; then
+                interface="$1"
+            else
+                echo "Error: Only one interface name can be specified."
+                exit 1
+            fi
+            ;;
+    esac
+    shift
+done
+
+# Get list of network interfaces
+interfaces=$(ip link | grep -E '^[0-9]+: ' | awk -F ': ' '{print $2}' | grep -v 'lo')
+
+# Generate report for each interface
+for iface in $interfaces; do
+    if [ "$iface" = "$interface" ] || [ -z "$interface" ]; then
+        if [ "$iface" != "lo" ]; then
+            echo "Interface: $iface"
+            if [ -n "$verbose" ]; then
+                ip -s link show $iface
+            else
+                ip addr show $iface | awk '/inet / {print "IP Address: " $2}'
+            fi
+            echo ""
+        fi
+    fi
+done
