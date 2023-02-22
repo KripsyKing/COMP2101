@@ -7,6 +7,7 @@
 # Check if lxd is installed, if not install it
 if ! command -v lxd >/dev/null 2>&1; then
   echo "lxd not found, installing..."
+ #sudo snap install lxd 
   sudo apt-get update
   sudo apt-get install lxd -y
 fi
