@@ -4,12 +4,18 @@
 # Title  : Lab 3
 # Discription : Virtual Web Server Creation in Ubuntu 
 
+# checking to see if sudo is in play
+if test $(whoami)!="root"; then 
+echo "Root is needed for this script to work,\n Switching to root..."
+sudo -i
+fi
+
 # Check if lxd is installed, if not install it
 if ! command -v lxd >/dev/null 2>&1; then
   echo "lxd not found, installing..."
- #sudo snap install lxd 
-  sudo apt-get update
-  sudo apt-get install lxd -y
+  sudo snap install lxd 
+  #sudo apt-get update
+  #sudo apt-get install lxd -y
 fi
 
 # Initialize lxd services if necessary
