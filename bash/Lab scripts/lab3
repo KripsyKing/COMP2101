@@ -6,8 +6,8 @@
 
 # checking to see if sudo is in play
 if test $(whoami)!="root"; then 
-echo "Root is needed for this script to work,\n Switching to root..."
-sudo -i
+echo "Superuser is needed for this script to work...."
+echo "Please run this script as sudo........ 'sudo bash lab3'"
 fi
 
 # Check if lxd is installed, if not install it
@@ -31,7 +31,7 @@ if ! lxc list | grep -q "COMP2101-S22"; then
 fi
 
 # Get the IP address of the container
-container_ip=$(lxc list COMP2101-S22 | awk '/eth0/ {print $6}')
+container_ip=$(lxc list | awk '/eth0/ {print $6}')
 
 # Add or update the entry in /etc/hosts for hostname COMP2101-S22 with the container’s current IP address if necessary
 if ! grep -q "COMP2101-S22" /etc/hosts; then
