@@ -28,11 +28,11 @@
 #####
 # Once per host report
 #####
-[ "$verbose" = "no" ] && echo "Gathering host information"
+[ "$verbose" = "yes" ] && echo "Gathering host information"
 # we use the hostname command to get our system name and main ip address
 my_hostname="$(hostname) / $(hostname -I)"
 
-[ "$verbose" = "no" ] && echo "Identifying default route"
+[ "$verbose" = "yes" ] && echo "Identifying default route"
 # the default route can be found in the route table normally
 # the router name is obtained with getent
 default_router_address=$(ip r s default| awk '{print $3}')
