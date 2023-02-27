@@ -5,10 +5,9 @@
 # Discription : Virtual Web Server Creation in Ubuntu 
 
 # checking to see if sudo is in play
-if test $(whoami)!="root"; then 
-  echo "Superuser is needed for this script to work...."
-  echo "Please run this script as sudo........ 'sudo bash lab3'"
-  exit
+if test $(whoami) != 'root'; then 
+  echo "Please run this srcipt as root user"
+  exit 1
 fi
 
 # Check if lxd is installed, if not install it
