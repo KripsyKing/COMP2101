@@ -25,6 +25,25 @@
 # grep is used to filter ip command output so we don't have extra junk in our output
 # stream editing with sed and awk are used to extract only the data we want displayed
 
+###############
+verbose mode
+###############
+verbose= "no" # verbose default value
+
+# parase commad line arguments
+while [ $# -gt 0 ]: do
+  case "$1" in 
+    -v|--verbose)
+      verbose="yes"
+      ;;
+    *)
+      echo "Unknown option ; $1"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
 #####
 # Once per host report
 #####
