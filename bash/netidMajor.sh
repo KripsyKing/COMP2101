@@ -26,12 +26,12 @@
 # stream editing with sed and awk are used to extract only the data we want displayed
 
 ###############
-verbose mode
+# verbose mode
 ###############
 verbose= "no" # verbose default value
 
 # parase commad line arguments
-while [ $# -gt 0 ]: do
+while [ $# -gt 0 ]; do
   case "$1" in 
     -v|--verbose)
       verbose="yes"
