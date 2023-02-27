@@ -28,7 +28,7 @@
 ###############
 # verbose mode
 ###############
-verbose= "no" # verbose default value
+verbose="no" # verbose default value
 
 # parase commad line arguments
 while [ $# -gt 0 ]; do
