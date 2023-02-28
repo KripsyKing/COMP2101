@@ -84,13 +84,13 @@ EOF
 #####
 
 # define the interface being summarized
-interface=$(ifconfig -s | awk '{print $1}' | tail -n 3)
+interface=$(ifconfig -s | awk '{print $1}' | tail -n 4)
 
 # start of loop
 for interface in $interface; do
   if [ $interface = "lo" ]; then 
     continue
-  elif [ $interface = "veth" ]; then
+  elif [ $interface = "veth9270" ]; then
     continue
   else  
     [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface";
