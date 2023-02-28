@@ -52,6 +52,8 @@ function getipinfo {
   bash netid.sh
 }
 
+trap cleanup SIGINT
+
 # process command line options
 partialreport=
 while [ $# -gt 0 ]; do
