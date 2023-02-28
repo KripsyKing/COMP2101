@@ -111,9 +111,17 @@ for interface in $interface; do
   echo "Interface $interface:"
   echo "==============="
   echo "Address         : $ipv4_address"
+  echo ""
   echo "Name            : $ipv4_hostname"
+  echo ""
   echo "Network Address : $network_address"
+  echo ""
   echo "Network Name    : $network_name"
+  echo ""
+  echo ""
+  echo ""
+  echo ""
+  sleep 2
   
   
   #EOF
