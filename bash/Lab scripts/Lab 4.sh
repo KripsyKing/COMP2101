@@ -1,6 +1,10 @@
 #!/bin/bash
 
-#
+# Author : Michael Major
+# Title  : Lab 3
+# Discription : This script crate a table for information on about the host and all network interfaces on the host 
+
+
 # Sample output:
 #   Hostname      : zubu
 #   LAN Address   : 192.168.2.2
