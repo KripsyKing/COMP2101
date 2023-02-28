@@ -84,7 +84,7 @@ EOF
 #####
 
 # define the interface being summarized
-interface=$(ifconfig -s | awk '{print $1}')
+interface=$(ifconfig -s | awk '{print $1}' | tail -n 3)
 
 # start of loop
 for interface in $interface; do
@@ -104,26 +104,16 @@ for interface in $interface; do
   network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1);
   network_number=$(cut -d / -f 1 <<<"$network_address");
   network_name=$(getent networks $network_number|awk '{print $1}');
-
-  #cat <<EOF
   
-  
+  # network interface information 
   echo "Interface $interface:"
   echo "==============="
   echo "Address         : $ipv4_address"
-  echo ""
   echo "Name            : $ipv4_hostname"
-  echo ""
   echo "Network Address : $network_address"
-  echo ""
   echo "Network Name    : $network_name"
   echo ""
-  echo ""
-  echo ""
-  echo ""
+
   sleep 2
-  
-  
-  #EOF
   
 done
