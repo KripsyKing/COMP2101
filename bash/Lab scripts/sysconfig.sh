@@ -10,6 +10,11 @@
 
 # Start of section to be done for TASK
 # This is where your changes will go for this TASK
+# asking user to be in root. since eorrs will be sent o a log file, which can not be accessed by normal user ( root is needed ) 
+if test $(whoami) != 'root'; then 
+  echo "Please run this srcipt as root user"
+  exit 1
+fi
 
 # This function will send an error message to stderr
 # Usage:
@@ -52,7 +57,7 @@ trap cleanup SIGINT
 #This function produces the network configuration for our report
 function getipinfo {
   # reuse our netid.sh script from lab 4
-  bash netid.sh
+  source netid.sh
 }
 
 
