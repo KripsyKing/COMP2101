@@ -28,7 +28,7 @@ function error-message {
 # Usage:
 #   error-exit ["some text to print to stderr" [exit-status]]
 function error-exit {
- echo "$1 is invalid" 2> /var/log/myerrors.log
+ 2> /var/log/myerrors.log
 
 }
 #This function displays help information if the user asks for it on the command line or gives us a bad command line
