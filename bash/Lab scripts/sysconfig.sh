@@ -33,7 +33,7 @@ function error-exit {
 }
 #This function displays help information if the user asks for it on the command line or gives us a bad command line
 function displayhelp {
- $0 -h
+ $@ -h
 
 }
 
