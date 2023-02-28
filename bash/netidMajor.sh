@@ -105,16 +105,16 @@ for interface in $interface; do
   network_number=$(cut -d / -f 1 <<<"$network_address");
   network_name=$(getent networks $network_number|awk '{print $1}');
 
-  cat << EOF;
+  cat << EOF
 
-  Interface $interface:;
-  ===============;
-  Address         : $ipv4_address;
-  Name            : $ipv4_hostname;
-  Network Address : $network_address;
-  Network Name    : $network_name;
+  Interface $interface:
+  ===============
+  Address         : $ipv4_address
+  Name            : $ipv4_hostname
+  Network Address : $network_address
+  Network Name    : $network_name
 
-  EOF;
+  EOF
 done
   #####
   # End of per-interface report
