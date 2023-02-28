@@ -40,6 +40,9 @@ function cleanup {
  logger -t `basename "$0"` -i -p user.info -s "cleaning up and aborting"
  exit 1
 }
+trap cleanup SIGINT
+trap cleanup SIGHUP
+trap cleanup SIGINT
 
 # End of section to be done for TASK
 # Remainder of script does not require any modification, but may need to be examined in order to create the functions for TASK
@@ -52,7 +55,6 @@ function getipinfo {
   bash netid.sh
 }
 
-trap cleanup SIGINT
 
 # process command line options
 partialreport=
