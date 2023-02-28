@@ -88,6 +88,7 @@ interface=$(ifconfig -s | awk '{print $1}' | tail -n 4)
 
 # start of loop
 for interface in $interface; do
+# if statment for the network id's that do not need to be included in this assignment. 
   if [ $interface = "lo" ]; then 
     continue
   elif [ $interface = "veth9270" ]; then
