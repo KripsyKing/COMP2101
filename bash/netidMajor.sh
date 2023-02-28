@@ -114,8 +114,9 @@ for interface in $interface; do
   Network Address : $network_address
   Network Name    : $network_name
 
-  EOF
-done
+  
   #####
   # End of per-interface report
   #####
+  EOF
+done
