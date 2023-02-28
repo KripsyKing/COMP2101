@@ -78,18 +78,16 @@ EOF
 # End of Once per host report
 #####
 
-# the second part of the output generates a per-interface report
-# the task is to change this from something that runs once using a fixed value for the interface name to
-#   a dynamic list obtained by parsing the interface names out of a network info command like "ip"
-#   and using a loop to run this info gathering section for every interface found
 
-# the default version uses a fixed name and puts it in a variable
 #####
 # Per-interface report
 #####
 
 # define the interface being summarized
-interface="ens33"
+interface=$(ifconfig -s | awk '{print $1}')
+
+# start of loop
+for interface in $interface;do;
 [ "$verbose" = "yes" ] && echo "Reporting on interface(s): $interface"
 
 [ "$verbose" = "yes" ] && echo "Getting IPV4 address and name for interface $interface"
