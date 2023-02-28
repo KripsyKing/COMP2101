@@ -105,14 +105,17 @@ for interface in $interface; do
   network_number=$(cut -d / -f 1 <<<"$network_address");
   network_name=$(getent networks $network_number|awk '{print $1}');
 
-  cat << EOF
-
-  Interface $interface:
-  ===============
-  Address         : $ipv4_address
-  Name            : $ipv4_hostname
-  Network Address : $network_address
-  Network Name    : $network_name
-
-  EOF;
+  #cat <<EOF
+  
+  
+  echo "Interface $interface:"
+  echo "==============="
+  echo "Address         : $ipv4_address"
+  echo "Name            : $ipv4_hostname"
+  echo "Network Address : $network_address"
+  echo "Network Name    : $network_name"
+  
+  
+  #EOF
+  
 done
