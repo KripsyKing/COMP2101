@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # start of script 
 
 # Check if the user is running the script as root
