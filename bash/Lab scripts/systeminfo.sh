@@ -1,7 +1,17 @@
 #!/bin/bash
 
-
 # start of script 
+=======
+# Function to display the help message
+display_help() {
+    echo "Usage: ./systeminfo.sh [OPTIONS]"
+    echo "Options:"
+    echo "  -h    Display this help message and exit"
+    echo "  -v    Run the script verbosely, showing errors to the user"
+    echo "  -system    Run only the computerreport, osreport, cpureport, ramreport, and videoreport"
+    echo "  -disk    Run only the diskreport"
+    echo "  -network    Run only the networkreport"
+}
 
 # Check if the user is running the script as root
 if [[ $EUID -ne 0 ]]; then
