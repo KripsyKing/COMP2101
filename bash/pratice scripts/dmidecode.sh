@@ -1,14 +1,17 @@
 #!/bin/bash
 
-
 # Function to display the RAM report
 ramreport() {
     echo "RAM Report"
     echo "----------"
-    echo "Component Manufacturer    Model                  Size    Speed    Location"
-    echo "-------------------------------------------------------------------------"
+    echo "Manufacturer    Model/Name    Size    Speed    Location"
+    echo "-----------------------------------------------------"
+
+    # Get the RAM information using dmidecode
+    local ram_info=$(sudo dmidecode -t memory 2>/dev/null)
+
     local total_size=0
-    local ram_info=$(sudo dmidecode --type 17)
+
     while IFS= read -r line; do
         if [[ $line =~ "Manufacturer:" ]]; then
             manufacturer=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
@@ -24,6 +27,10 @@ ramreport() {
             echo "$manufacturer    $part_number    $size    $speed    $location"
         fi
     done <<< "$ram_info"
-    echo "-------------------------------------------------------------------------"
+
+    echo "-----------------------------------------------------"
     echo "Total Installed RAM: $total_size GB"
 }
+
+# Example usage:
+ramreport
