@@ -58,7 +58,9 @@ ramreport() {
             part_number=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
         elif [[ $line =~ "Size:" ]]; then
             size=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
-            total_size=$((total_size + size))
+            IFS=" "
+	    read -a size_number <<< "$size"
+total_size=$((total_size + size_number))
         elif [[ $line =~ "Speed:" ]]; then
             speed=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
         elif [[ $line =~ "Locator:" ]]; then
