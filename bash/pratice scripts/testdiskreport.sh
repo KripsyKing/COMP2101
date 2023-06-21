@@ -1,32 +1,27 @@
 #!/bin/bash
 
+# Function to display the disk report
 diskreport() {
-  echo "Disk Report"
-  echo "-----------"
-  echo
-
-  echo "Drive Manufacturer | Drive Model | Drive Size | Partition | Mount Point | Filesystem Size | Free Space"
-  echo "------------------ | ----------- | ---------- | --------- | ----------- | --------------- | -----------"
-
-  # Get disk information using 'lsblk' command
-  disks=$(lsblk -o NAME,MODEL,SIZE,MOUNTPOINT,FSTYPE,FSSIZE,FSUSED --exclude 1,7 -n -r)
-
-  while IFS=' ' read -r name model size mountpoint fstype fssize fsused; do
-    # Format disk size
-    size_human=$(numfmt --to=iec-i --suffix=B --format="%.1f" <<< "$size")
-
-    # Format filesystem size and free space if mounted
-    if [ -n "$mountpoint" ]; then
-      fssize_human=$(numfmt --to=iec-i --suffix=B --format="%.1f" <<< "$fssize")
-      fsused_human=$(numfmt --to=iec-i --suffix=B --format="%.1f" <<< "$fsused")
-    else
-      fssize_human="N/A"
-      fsused_human="N/A"
-    fi
-
-    echo "$name | $model | $size_human | $mountpoint | $fstype | $fssize_human | $fsused_human"
-  done <<< "$disks"
+    echo " "
+    echo "Disk Report"
+    echo "-----------"
+    echo "Manufacturer    Model        Size    Partition    Mount Point    Filesystem Size    Free Space"
+    echo "------------------------------------------------------------------------------------------------"
+    local disk_info=$(lsblk -o NAME,SIZE,VENDOR,MODEL | grep -v "loop" | grep -v "sr0")
+    while IFS= read -r line; do
+        local disk_name=$(echo "$line" | awk '{print $1}')
+        local disk_size=$(echo "$line" | awk '{print $2}')
+        local disk_vendor=$(echo "$line" | awk '{print $3}')
+        local disk_model=$(echo "$line" | awk '{print $4}')
+        local partition_info=$(lsblk -o NAME,MOUNTPOINT,FSTYPE,SIZE -n -r "/dev/$disk_name" 2>/dev/null)
+        while IFS= read -r partition_line; do
+            local partition_name=$(echo "$partition_line" | awk '{print $1}')
+            local mount_point=$(echo "$partition_line" | awk '{print $2}')
+            local filesystem_type=$(echo "$partition_line" | awk '{print $3}')
+            local partition_size=$(echo "$partition_line" | awk '{print $4}')
+            local partition_free_space=$(df -h --output=avail "/dev/$partition_name" 2>/dev/null | tail -n 1)
+            echo "$disk_vendor    $disk_model    $disk_size    $partition_name    $mount_point    $filesystem_type    $partition_size    $partition_free_space"
+        done <<< "$partition_info"
+    done <<< "$disk_info"
+    echo "------------------------------------------------------------------------------------------------"
 }
-
-# Call the diskreport function
-diskreport
