@@ -14,6 +14,7 @@ errormessage() {
 
 # Function to display the CPU report
 cpureport() {
+    echo " "
     echo "CPU Report"
     echo "----------"
     echo "Manufacturer and Model: $(cat /proc/cpuinfo | grep "model name" | head -n 1 | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//')"
@@ -28,6 +29,7 @@ cpureport() {
 
 # Function to display the computer report
 computerreport() {
+    echo " "
     echo "Computer Report"
     echo "---------------"
     echo "Manufacturer: $(sudo dmidecode -s system-manufacturer)"
@@ -37,6 +39,7 @@ computerreport() {
 
 # Function to display the OS report
 osreport() {
+    echo " "
     echo "OS Report"
     echo "---------"
     echo "Linux Distro: $(lsb_release -sd)"
@@ -45,6 +48,7 @@ osreport() {
 
 # Function to display the RAM report
 ramreport() {
+    echo " "
     echo "RAM Report"
     echo "----------"
     echo "Component Manufacturer    Model                  Size    Speed    Location"
@@ -58,10 +62,12 @@ ramreport() {
             part_number=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
         elif [[ $line =~ "Size:" ]]; then
             size=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
-            total_size=$((total_size + size))
+            IFS=" "
+	    read -a size_number <<< "$size"
+            total_size=$((total_size + size_number))
         elif [[ $line =~ "Speed:" ]]; then
             speed=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
-        elif [[ $line =~ "Locator:" ]]; then
+        elif [[ $line =~ "Bank Locator:" ]]; then
             location=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
             echo "$manufacturer    $part_number    $size    $speed    $location"
         fi
@@ -72,6 +78,7 @@ ramreport() {
 
 # Function to display the video report
 videoreport() {
+    echo " "
     echo "Video Report"
     echo "------------"
     echo "Video Card/Chipset Manufacturer: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $3}' | sed -e 's/^[[:space:]]*//')"
@@ -80,6 +87,7 @@ videoreport() {
 
 # Function to display the disk report
 diskreport() {
+    echo " "
     echo "Disk Report"
     echo "-----------"
     echo "Manufacturer    Model        Size    Partition    Mount Point    Filesystem Size    Free Space"
@@ -105,6 +113,7 @@ diskreport() {
 
 # Function to display the network report
 networkreport() {
+    echo " "
     echo "Network Report"
     echo "--------------"
     echo "Manufacturer    Model/Description    Link State    Current Speed    IP Addresses    Bridge Master    DNS Servers    Search Domains"
