@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source funclibary.sh
-
 # start of script 
 
 # Specify the filename to check
@@ -20,6 +18,9 @@ else
     echo "The function libary script is not in the same location as you are, please make sure it is in the same location."
     exit 1
 fi
+
+
+source funclibary.sh
 
 
 # Function to display the help message
