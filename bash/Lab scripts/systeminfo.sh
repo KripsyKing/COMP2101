@@ -13,8 +13,10 @@ file_path="$script_dir/$filename"
 
 # Check if the file exists
 if [ -e "$file_path" ]; then
+    sleep 1
     echo "file located...."
     sleep 1
+    echo "goodbye"
     continue
     
 else
