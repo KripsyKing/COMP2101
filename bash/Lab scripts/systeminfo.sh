@@ -3,7 +3,8 @@
 source funclibary.sh
 
 # start of script 
-=======
+
+
 # Function to display the help message
 display_help() {
     echo "Usage: ./systeminfo.sh [OPTIONS]"
