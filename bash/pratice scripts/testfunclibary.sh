@@ -99,14 +99,7 @@ diskreport() {
         local disk_vendor=$(echo "$line" | awk '{print $3}')
         local disk_model=$(echo "$line" | awk '{print $4}')
         local partition_info=$(lsblk -o NAME,MOUNTPOINT,FSTYPE,SIZE -n -r "/dev/$disk_name" 2>/dev/null)
-        while IFS= read -r partition_line; do
-            local partition_name=$(echo "$partition_line" | awk '{print $1}')
-            local mount_point=$(echo "$partition_line" | awk '{print $2}')
-            local filesystem_type=$(echo "$partition_line" | awk '{print $3}')
-            local partition_size=$(echo "$partition_line" | awk '{print $4}')
-            local partition_free_space=$(df -h --output=avail "/dev/$partition_name" 2>/dev/null | tail -n 1)
-            echo "$disk_vendor    $disk_model    $disk_size    $partition_name    $mount_point    $filesystem_type    $partition_size    $partition_free_space"
-        done <<< "$partition_info"
+        echo "$disk_size    $disk_vendor    $disk_model"
     done <<< "$disk_info"
     echo "------------------------------------------------------------------------------------------------"
 }
