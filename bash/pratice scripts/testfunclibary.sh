@@ -90,8 +90,6 @@ diskreport() {
     echo " "
     echo "Disk Report"
     echo "-----------"
-    echo "Manufacturer    Model        Size    Partition    Mount Point    Filesystem Size    Free Space"
-    echo "------------------------------------------------------------------------------------------------"
     local disk_info=$(lsblk -o NAME,SIZE,VENDOR,MODEL | grep -v "loop" | grep -v "sr0")
     while IFS= read -r line; do
         local disk_name=$(echo "$line" | awk '{print $1}')
