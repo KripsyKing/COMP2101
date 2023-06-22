@@ -84,7 +84,7 @@ videoreport() {
     echo "------------"
     echo "Video Card/Chipset Manufacturer: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $3}' | sed -e 's/^[[:space:]]*//')"
     echo "Video Card/Chipset Model: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $4}' | sed -e 's/^[[:space:]]*//')"
-    
+    echo "-------------------------------------------------"   
 }
 
 # Function to display the disk report
@@ -101,7 +101,7 @@ diskreport() {
         local partition_info=$(lsblk -o NAME,MOUNTPOINT,FSTYPE,SIZE -n -r "/dev/$disk_name" 2>/dev/null)
         echo "$disk_size    $disk_vendor    $disk_model"
     done <<< "$disk_info"
-    echo "---------------------------------------------------"
+    echo "-----------------------------------------"
 }
 
 # Function to display the network report
