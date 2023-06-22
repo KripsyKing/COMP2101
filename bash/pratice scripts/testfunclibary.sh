@@ -25,6 +25,7 @@ cpureport() {
     echo "  L1 Cache: $(lscpu | grep "L1d cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f kB\n", $1/1024}')"
     echo "  L2 Cache: $(lscpu | grep "L2 cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f MB\n", $1/1024}')"
     echo "  L3 Cache: $(lscpu | grep "L3 cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f MB\n", $1/1024}')"
+    echo "---------------------------------------"
 }
 
 # Function to display the computer report
@@ -35,6 +36,7 @@ computerreport() {
     echo "Manufacturer: $(sudo dmidecode -s system-manufacturer)"
     echo "Description or Model: $(sudo dmidecode -s system-product-name)"
     echo "Serial Number: $(sudo dmidecode -s system-serial-number)"
+    echo "----------------------------------------------------------"
 }
 
 # Function to display the OS report
@@ -44,6 +46,7 @@ osreport() {
     echo "---------"
     echo "Linux Distro: $(lsb_release -sd)"
     echo "Distro Version: $(lsb_release -sr)"
+    echo "--------------------------------------"
     
 }
 
