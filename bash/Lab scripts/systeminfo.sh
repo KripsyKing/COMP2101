@@ -11,9 +11,9 @@ display_help() {
     echo "Options:"
     echo "  -h    Display this help message and exit"
     echo "  -v    Run the script verbosely, showing errors to the user"
-    echo "  -system    Run only the computerreport, osreport, cpureport, ramreport, and videoreport"
-    echo "  -disk    Run only the diskreport"
-    echo "  -network    Run only the networkreport"
+    echo "  -s (system)    Run only the computerreport, osreport, cpureport, ramreport, and videoreport"
+    echo "  -d (disk)      Run only the diskreport"
+    echo "  -n (network)   Run only the networkreport"
 }
 
 # Check if the user is running the script as root
@@ -38,13 +38,13 @@ while getopts "hvsystemdisknetwork" opt; do
         v)
             verbose=true
             ;;
-        s | "system")
+        s)
             run_system=true
             ;;
-        d | "disk")
+        d)
             run_disk=true
             ;;
-        n | "network")
+        n)
             run_network=true
             ;;
         *)
