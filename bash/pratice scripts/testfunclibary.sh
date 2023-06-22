@@ -44,6 +44,7 @@ osreport() {
     echo "---------"
     echo "Linux Distro: $(lsb_release -sd)"
     echo "Distro Version: $(lsb_release -sr)"
+    
 }
 
 # Function to display the RAM report
@@ -52,7 +53,7 @@ ramreport() {
     echo "RAM Report"
     echo "----------"
     echo "Component Manufacturer    Model                  Size    Speed    Location"
-    echo "-------------------------------------------------------------------------"
+    echo " "
     local total_size=0
     local ram_info=$(sudo dmidecode --type 17)
     while IFS= read -r line; do
@@ -83,6 +84,7 @@ videoreport() {
     echo "------------"
     echo "Video Card/Chipset Manufacturer: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $3}' | sed -e 's/^[[:space:]]*//')"
     echo "Video Card/Chipset Model: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $4}' | sed -e 's/^[[:space:]]*//')"
+    
 }
 
 # Function to display the disk report
@@ -99,7 +101,7 @@ diskreport() {
         local partition_info=$(lsblk -o NAME,MOUNTPOINT,FSTYPE,SIZE -n -r "/dev/$disk_name" 2>/dev/null)
         echo "$disk_size    $disk_vendor    $disk_model"
     done <<< "$disk_info"
-    echo "------------------------------------------------------------------------------------------------"
+    echo "---------------------------------------------------"
 }
 
 # Function to display the network report
@@ -108,7 +110,7 @@ networkreport() {
     echo "Network Report"
     echo "--------------"
     echo "Manufacturer    Model/Description    Link State    Current Speed    IP Addresses    Bridge Master    DNS Servers    Search Domains"
-    echo "-----------------------------------------------------------------------------------------------------------------------------"
+    echo " "
     local network_info=$(sudo lshw -C network 2>/dev/null)
     while IFS= read -r line; do
         if [[ $line =~ "description:" ]]; then
