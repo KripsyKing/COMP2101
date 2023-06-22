@@ -17,8 +17,6 @@ if [ -e "$file_path" ]; then
     echo "file located...."
     sleep 1
     echo "goodbye"
-    continue
-    
 else
     echo "The function libary script is not in the same location as you are, please make sure it is in the same location."
     sleep 1
