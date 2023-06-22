@@ -1,50 +1,44 @@
 #!/bin/bash
 
-# Function to convert bytes to human-friendly format
-human_readable() {
-    awk -v bytes="${1}" 'BEGIN {
-        units["B"] = 0;
-        units["KB"] = 1;
-        units["MB"] = 2;
-        units["GB"] = 3;
-        units["TB"] = 4;
-        unit = "B";
-        size = bytes;
-        for (i = 0; size >= 1024 && i < 4; i++) {
-            size = size / 1024;
-            unit = "KB MB GB TB"[i + 1];
-        }
-        printf "%.2f %s", size, unit;
-    }'
+diskreport() {
+    # Title
+    echo "Disk Report"
+
+    # Column headers
+    printf "%-20s %-20s %-20s %-15s %-15s %-20s %-20s\n" \
+        "Drive Manufacturer" "Drive Model" "Drive Size" "Partition" \
+        "Mount Point" "Filesystem Size" "Free Space"
+
+    # Iterate over disks
+    for disk in $(lsblk -ndo NAME,TYPE | awk '$2=="disk" {print $1}')
+    do
+        # Get disk info
+        manufacturer=$(hdparm -I "/dev/$disk" | awk -F': ' '/^Model/ {print $2}')
+        model=$(hdparm -I "/dev/$disk" | awk -F': ' '/^Device/ {print $2}')
+        size=$(lsblk -nbdo SIZE "/dev/$disk")
+        partitions=$(lsblk -ndo NAME,TYPE "/dev/$disk" | awk '$2=="part" {print $1}')
+
+        # Iterate over partitions
+        for partition in $partitions
+        do
+            mountpoint=$(lsblk -ndo MOUNTPOINT "/dev/$partition")
+            filesystem=$(lsblk -ndo FSTYPE "/dev/$partition")
+
+            if [ -n "$mountpoint" ] && [ -n "$filesystem" ]
+            then
+                fs_size=$(df -h | awk -v partition="/dev/$partition" '$1==partition {print $2}')
+                fs_free=$(df -h | awk -v partition="/dev/$partition" '$1==partition {print $4}')
+            else
+                fs_size=""
+                fs_free=""
+            fi
+
+            # Print partition info
+            printf "%-20s %-20s %-20s %-15s %-15s %-20s %-20s\n" \
+                "$manufacturer" "$model" "$size" "$partition" "$mountpoint" "$fs_size" "$fs_free"
+        done
+    done
 }
 
-# Get the disk drive information using 'lsblk' command
-drive_info=$(lsblk -b -o NAME,TYPE,MODEL,SIZE,MOUNTPOINT,FSTYPE,FSSIZE,FSUSED,FSAVAIL | tail -n +2)
-
-# Print the report title
-echo "Disk Drive Report"
-echo "-----------------"
-echo
-
-# Print the table header
-printf "%-10s %-10s %-20s %-15s %-10s %-15s %-15s\n" "Drive" "Type" "Model" "Size" "Partition" "Mount Point" "Free Space"
-echo "------------------------------------------------------------------------------------"
-
-# Loop through the drive information and print the table rows
-while read -r drive type model size mountpoint fstype fssize fsused fsavail; do
-    # Convert the drive size to a human-friendly format
-    size_human=$(human_readable "$size")
-
-    # Check if the drive is mounted
-    if [[ -n "$mountpoint" ]]; then
-        # Convert the filesystem size and free space to human-friendly formats
-        fssize_human=$(human_readable "$fssize")
-        fsavail_human=$(human_readable "$fsavail")
-
-        # Print the mounted drive information
-        printf "%-10s %-10s %-20s %-15s %-10s %-15s %-15s\n" "$drive" "$type" "$model" "$size_human" "$mountpoint" "$fssize_human" "$fsavail_human"
-    else
-        # Print the unmounted drive information
-        printf "%-10s %-10s %-20s %-15s %-10s %-15s %-15s\n" "$drive" "$type" "$model" "$size_human" "-" "-" "-"
-    fi
-done <<< "$drive_info"
+# Generate disk report
+diskreport
