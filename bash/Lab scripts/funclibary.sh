@@ -14,6 +14,7 @@ errormessage() {
 
 # Function to display the CPU report
 cpureport() {
+    echo " "
     echo "CPU Report"
     echo "----------"
     echo "Manufacturer and Model: $(cat /proc/cpuinfo | grep "model name" | head -n 1 | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//')"
@@ -24,31 +25,38 @@ cpureport() {
     echo "  L1 Cache: $(lscpu | grep "L1d cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f kB\n", $1/1024}')"
     echo "  L2 Cache: $(lscpu | grep "L2 cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f MB\n", $1/1024}')"
     echo "  L3 Cache: $(lscpu | grep "L3 cache" | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//' | awk '{printf "%.2f MB\n", $1/1024}')"
+    echo "---------------------------------------"
 }
 
 # Function to display the computer report
 computerreport() {
+    echo " "
     echo "Computer Report"
     echo "---------------"
     echo "Manufacturer: $(sudo dmidecode -s system-manufacturer)"
     echo "Description or Model: $(sudo dmidecode -s system-product-name)"
     echo "Serial Number: $(sudo dmidecode -s system-serial-number)"
+    echo "----------------------------------------------------------"
 }
 
 # Function to display the OS report
 osreport() {
+    echo " "
     echo "OS Report"
     echo "---------"
     echo "Linux Distro: $(lsb_release -sd)"
     echo "Distro Version: $(lsb_release -sr)"
+    echo "--------------------------------------"
+    
 }
 
 # Function to display the RAM report
 ramreport() {
+    echo " "
     echo "RAM Report"
     echo "----------"
     echo "Component Manufacturer    Model                  Size    Speed    Location"
-    echo "-------------------------------------------------------------------------"
+    echo " "
     local total_size=0
     local ram_info=$(sudo dmidecode --type 17)
     while IFS= read -r line; do
@@ -58,10 +66,12 @@ ramreport() {
             part_number=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
         elif [[ $line =~ "Size:" ]]; then
             size=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
-            total_size=$((total_size + size))
+            IFS=" "
+	    read -a size_number <<< "$size"
+            total_size=$((total_size + size_number))
         elif [[ $line =~ "Speed:" ]]; then
             speed=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
-        elif [[ $line =~ "Locator:" ]]; then
+        elif [[ $line =~ "Bank Locator:" ]]; then
             location=$(echo "$line" | awk -F ':' '{print $2}' | sed -e 's/^[[:space:]]*//')
             echo "$manufacturer    $part_number    $size    $speed    $location"
         fi
@@ -72,18 +82,19 @@ ramreport() {
 
 # Function to display the video report
 videoreport() {
+    echo " "
     echo "Video Report"
     echo "------------"
     echo "Video Card/Chipset Manufacturer: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $3}' | sed -e 's/^[[:space:]]*//')"
     echo "Video Card/Chipset Model: $(lspci | grep -i 'VGA compatible controller' | awk -F ':' '{print $4}' | sed -e 's/^[[:space:]]*//')"
+    echo "-------------------------------------------------"   
 }
 
 # Function to display the disk report
 diskreport() {
+    echo " "
     echo "Disk Report"
     echo "-----------"
-    echo "Manufacturer    Model        Size    Partition    Mount Point    Filesystem Size    Free Space"
-    echo "------------------------------------------------------------------------------------------------"
     local disk_info=$(lsblk -o NAME,SIZE,VENDOR,MODEL | grep -v "loop" | grep -v "sr0")
     while IFS= read -r line; do
         local disk_name=$(echo "$line" | awk '{print $1}')
@@ -91,24 +102,18 @@ diskreport() {
         local disk_vendor=$(echo "$line" | awk '{print $3}')
         local disk_model=$(echo "$line" | awk '{print $4}')
         local partition_info=$(lsblk -o NAME,MOUNTPOINT,FSTYPE,SIZE -n -r "/dev/$disk_name" 2>/dev/null)
-        while IFS= read -r partition_line; do
-            local partition_name=$(echo "$partition_line" | awk '{print $1}')
-            local mount_point=$(echo "$partition_line" | awk '{print $2}')
-            local filesystem_type=$(echo "$partition_line" | awk '{print $3}')
-            local partition_size=$(echo "$partition_line" | awk '{print $4}')
-            local partition_free_space=$(df -h --output=avail "/dev/$partition_name" 2>/dev/null | tail -n 1)
-            echo "$disk_vendor    $disk_model    $disk_size    $partition_name    $mount_point    $filesystem_type    $partition_size    $partition_free_space"
-        done <<< "$partition_info"
+        echo "$disk_size    $disk_vendor    $disk_model"
     done <<< "$disk_info"
-    echo "------------------------------------------------------------------------------------------------"
+    echo "-----------------------------------------"
 }
 
 # Function to display the network report
 networkreport() {
+    echo " "
     echo "Network Report"
     echo "--------------"
     echo "Manufacturer    Model/Description    Link State    Current Speed    IP Addresses    Bridge Master    DNS Servers    Search Domains"
-    echo "-----------------------------------------------------------------------------------------------------------------------------"
+    echo " "
     local network_info=$(sudo lshw -C network 2>/dev/null)
     while IFS= read -r line; do
         if [[ $line =~ "description:" ]]; then

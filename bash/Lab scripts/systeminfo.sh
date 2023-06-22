@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source funclibary.sh
+
 # start of script 
 =======
 # Function to display the help message
