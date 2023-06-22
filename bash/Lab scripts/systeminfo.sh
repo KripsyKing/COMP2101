@@ -38,13 +38,13 @@ while getopts "hvsystemdisknetwork" opt; do
         v)
             verbose=true
             ;;
-        s)
+        s | system)
             run_system=true
             ;;
-        d)
+        d | disk)
             run_disk=true
             ;;
-        n)
+        n | network)
             run_network=true
             ;;
         *)
