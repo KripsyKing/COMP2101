@@ -13,9 +13,13 @@ file_path="$script_dir/$filename"
 
 # Check if the file exists
 if [ -e "$file_path" ]; then
+    echo "file located...."
+    sleep 1
     continue
+    
 else
     echo "The function libary script is not in the same location as you are, please make sure it is in the same location."
+    sleep 1
     exit 1
 fi
 
