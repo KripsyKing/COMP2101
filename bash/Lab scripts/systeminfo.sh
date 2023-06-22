@@ -4,6 +4,23 @@ source funclibary.sh
 
 # start of script 
 
+# Specify the filename to check
+filename="funclibary.sh"
+
+# Get the current script's directory
+script_dir=$(dirname "$(realpath "$0")")
+
+# Build the full path to the file
+file_path="$script_dir/$filename"
+
+# Check if the file exists
+if [ -e "$file_path" ]; then
+    continue
+else
+    echo "The function libary script is not in the same location as you are, please make sure it is in the same location."
+    exit 1
+fi
+
 
 # Function to display the help message
 display_help() {
