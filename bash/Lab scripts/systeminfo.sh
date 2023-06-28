@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# start of script 
+# start of script
 
 # Specify the filename to check
 filename="funclibary.sh"
@@ -11,12 +11,19 @@ script_dir=$(dirname "$(realpath "$0")")
 # Build the full path to the file
 file_path="$script_dir/$filename"
 
+# checking to see if sudo is in play
+if test $(whoami) != 'root'; then
+    echo "please run this script as root user"
+    exit 1
+fi
+
 # Check if the file exists
 if [ -e "$file_path" ]; then
     sleep 1
     echo "file located...."
     sleep 1
     echo "goodbye"
+    sleep 1
 else
     echo "The function libary script is not in the same location as you are, please make sure it is in the same location."
     sleep 1
