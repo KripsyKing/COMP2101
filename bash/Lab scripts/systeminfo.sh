@@ -17,6 +17,13 @@ if test $(whoami) != 'root'; then
     exit 1
 fi
 
+# check to see if bridge-utils is installed, if not install it 
+if ! command -v brctl show >/dev/null 2>&1; then
+    echo "brctl is not found installing..."
+    sleep 1
+    sudo apt install bridge-utils
+fi
+
 # Check if the file exists
 if [ -e "$file_path" ]; then
     sleep 1
