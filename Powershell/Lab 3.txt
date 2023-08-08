@@ -1,0 +1,73 @@
+# Check if the script is running with administrator privileges
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "This script requires administrator privileges."
+    exit
+}
+
+# Function to handle command errors
+function Check-Error {
+    param (
+        [string]$command
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Error occurred while executing: $command"
+        exit 1
+    }
+}
+
+# System Description
+Write-Host "System Description"
+Write-Host "-------------------"
+
+# Using Get-WmiObject to get system information
+$systemInfo = Get-WmiObject Win32_ComputerSystem
+Check-Error "Get-WmiObject"
+
+$manufacturer = $systemInfo.Manufacturer
+$model = $systemInfo.Model
+$serialNumber = $systemInfo.SerialNumber
+
+Write-Host "Manufacturer: $manufacturer"
+Write-Host "Model: $model"
+Write-Host "Serial Number: $serialNumber"
+Write-Host ""
+
+# CPU Information
+Write-Host "CPU Information"
+Write-Host "---------------"
+
+# Using Get-WmiObject to get CPU information
+$cpuInfo = Get-WmiObject Win32_Processor
+Check-Error "Get-WmiObject"
+
+$cpuModel = $cpuInfo.Name
+$architecture = $cpuInfo.Architecture
+$coreCount = $cpuInfo.NumberOfCores
+$maxSpeed = "$($cpuInfo.MaxClockSpeed) MHz"
+$l1Cache = "$($cpuInfo.L2CacheSize) KB"
+$l2Cache = "$($cpuInfo.L2CacheSize) KB"
+$l3Cache = "$($cpuInfo.L3CacheSize) KB"
+
+Write-Host "CPU Model: $cpuModel"
+Write-Host "Architecture: $architecture"
+Write-Host "Core Count: $coreCount"
+Write-Host "Max Speed: $maxSpeed"
+Write-Host "L1 Cache: $l1Cache"
+Write-Host "L2 Cache: $l2Cache"
+Write-Host "L3 Cache: $l3Cache"
+Write-Host ""
+
+# Operating System Information
+Write-Host "Operating System Information"
+Write-Host "---------------------------"
+
+# Get operating system information using Get-WmiObject
+$osInfo = Get-WmiObject Win32_OperatingSystem
+Check-Error "Get-WmiObject"
+
+$distro = "Windows"
+$distroVersion = $osInfo.Version
+
+Write-Host "Windows Distro: $distro"
+Write-Host "Distro Version: $distroVersion"
