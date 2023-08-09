@@ -76,7 +76,7 @@ if ($System) {
 }
 
 if ($Disks) {
-    Get-DisksInfo
+    Get-DisksDrive
 }
 
 if ($Network) {
@@ -85,7 +85,7 @@ if ($Network) {
 
 if (-not ($System -or $Disks -or $Network)) {
     $systemInfo = Get-SystemInfo
-    $disksInfo = Get-DisksInfo
+    $disksInfo = Get-DisksDrive
     $networkInfo = Get-NetworkInfo
 
     Write-Host "System Info:"
