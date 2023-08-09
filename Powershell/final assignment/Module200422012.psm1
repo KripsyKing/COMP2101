@@ -1,4 +1,12 @@
+# Title: System Report Module
+# Author: Michael Major 200422012
+# Description: This module generates a report for the system, disk, and network information of host.
+
+# Start of module
+# Function to create report
 function systemreport {
+
+# Setting parameters
 param (
     [switch]$System,
     [switch]$Disks,
@@ -48,6 +56,7 @@ function Get-DiskDrives {
 
     return $diskSum
 }
+# less info for disk report (just another idea, less info)
 #function Get-DisksInfo {
     #$disksInfo = Get-WmiObject Win32_DiskDrive | Select-Object Model, Size
 
@@ -72,8 +81,7 @@ function Get-NetworkInfo {
     }
 }
 
-# function to generae report
-
+# if statments for report 
 if ($System) {
     Get-SystemInfo
 }
