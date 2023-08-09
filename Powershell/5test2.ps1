@@ -24,7 +24,7 @@ function Get-SystemInfo {
 function Get-DiskDrives {
     $diskDrives = Get-CIMInstance CIM_diskdrive
 
-    $diskInfo = @()
+    $diskSum = @()
 
     foreach ($disk in $diskDrives) {
         $partitions = $disk | Get-CimAssociatedInstance -ResultClassName CIM_diskpartition
@@ -33,7 +33,7 @@ function Get-DiskDrives {
             $logicalDisks = $partition | Get-CimAssociatedInstance -ResultClassName CIM_LogicalDisk
 
             foreach ($logicalDisk in $logicalDisks) {
-                $diskInfo += [PSCustomObject]@{
+                $diskSum += [PSCustomObject]@{
                     Manufacturer = $disk.Manufacturer
                     Location = $partition.DeviceID
                     Drive = $logicalDisk.DeviceID
@@ -45,7 +45,7 @@ function Get-DiskDrives {
         }
     }
 
-    return $diskInfo
+    return $diskSum
 }
 #function Get-DisksInfo {
     #$disksInfo = Get-WmiObject Win32_DiskDrive | Select-Object Model, Size
