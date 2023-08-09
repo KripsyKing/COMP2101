@@ -1,9 +1,9 @@
+function systemreport {
 param (
     [switch]$System,
     [switch]$Disks,
     [switch]$Network
 )
-function systemreport {
 
 # Function to get system information 
 function Get-SystemInfo {
