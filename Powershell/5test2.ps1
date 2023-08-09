@@ -71,6 +71,8 @@ function Get-NetworkInfo {
     }
 }
 
+# function to generae report
+function systemreport {
 if ($System) {
     Get-SystemInfo
 }
@@ -96,4 +98,5 @@ if (-not ($System -or $Disks -or $Network)) {
 
     Write-Host "Network Info:"
     $networkInfo | Format-Table -AutoSize
+}
 }
