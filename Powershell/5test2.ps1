@@ -79,7 +79,7 @@ if ($System) {
 }
 
 if ($Disks) {
-    Get-DisksDrive
+    Get-DiskDrives 
 }
 
 if ($Network) {
