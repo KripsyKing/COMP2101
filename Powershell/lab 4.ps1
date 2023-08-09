@@ -20,7 +20,7 @@ function Get-PhysicalMemory {
 
 # Function to get disk drive information
 function Get-DiskDrives {
-    $diskDrives = Get-WmiObject -Class Win32_DiskDrive
+    $diskDrives = Get-CIMInstance CIM_diskdrive
 
     $diskInfo = @()
 
