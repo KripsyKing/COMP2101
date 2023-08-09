@@ -4,6 +4,7 @@ param (
     [switch]$Network
 )
 
+# Function to get system information 
 function Get-SystemInfo {
     $cpuInfo = Get-WmiObject Win32_Processor | Select-Object Name, NumberOfCores
     $osInfo = Get-WmiObject Win32_OperatingSystem | Select-Object Caption, OSArchitecture
@@ -18,20 +19,21 @@ function Get-SystemInfo {
         Video = "$($videoInfo.Name) $($videoInfo.AdapterRAM / 1MB) MB"
     }
 }
-#Getting Disk Information
-function Get-DiskInfo {
-    $diskInfo = Get-CIMInstance CIM_diskdrive
 
-    $diskDrive = @()
+# Function to get disk drive information
+function Get-DiskDrives {
+    $diskDrives = Get-CIMInstance CIM_diskdrive
 
-    foreach ($disk in $diskInfo) {
+    $diskInfo = @()
+
+    foreach ($disk in $diskDrives) {
         $partitions = $disk | Get-CimAssociatedInstance -ResultClassName CIM_diskpartition
 
         foreach ($partition in $partitions) {
             $logicalDisks = $partition | Get-CimAssociatedInstance -ResultClassName CIM_LogicalDisk
 
             foreach ($logicalDisk in $logicalDisks) {
-                $diskDrive += [PSCustomObject]@{
+                $diskInfo += [PSCustomObject]@{
                     Manufacturer = $disk.Manufacturer
                     Location = $partition.DeviceID
                     Drive = $logicalDisk.DeviceID
@@ -43,7 +45,7 @@ function Get-DiskInfo {
         }
     }
 
-    return $diskDrive
+    return $diskInfo
 }
 #function Get-DisksInfo {
     #$disksInfo = Get-WmiObject Win32_DiskDrive | Select-Object Model, Size
@@ -56,6 +58,7 @@ function Get-DiskInfo {
  #   }
 #}
 
+# Function to get network information 
 function Get-NetworkInfo {
     $networkInfo = Get-WmiObject -Class Win32_NetworkAdapterConfiguration | Where-Object { $_.IPEnabled }
     #Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object { $_.IPEnabled -eq $true } | Select-Object Description, IPAddress
