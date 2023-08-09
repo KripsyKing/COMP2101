@@ -20,15 +20,15 @@ function Get-PhysicalMemory {
 
 # Function to get disk drive information
 function Get-DiskDrives {
-    $diskDrives = Get-WmiObject -Class Win32_DiskDrive
+    $diskDrives = Get-CIMInstance CIM_diskdrive
 
     $diskInfo = @()
 
     foreach ($disk in $diskDrives) {
-        $partitions = $disk | Get-CimAssociatedInstance -ResultClassName Win32_DiskPartition
+        $partitions = $disk | Get-CimAssociatedInstance -ResultClassName CIM_diskpartition
 
         foreach ($partition in $partitions) {
-            $logicalDisks = $partition | Get-CimAssociatedInstance -ResultClassName Win32_LogicalDisk
+            $logicalDisks = $partition | Get-CimAssociatedInstance -ResultClassName CIM_LogicalDisk
 
             foreach ($logicalDisk in $logicalDisks) {
                 $diskInfo += [PSCustomObject]@{
