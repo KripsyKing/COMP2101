@@ -56,8 +56,8 @@ function Get-DiskDrives {
 
     return $diskSum
 }
-# less info for disk report (just another idea, less info)
-#function Get-DisksInfo {
+# Less info for disk report (just another idea, less info)
+# Function Get-DisksInfo {
     #$disksInfo = Get-WmiObject Win32_DiskDrive | Select-Object Model, Size
 
     #$disksInfo | ForEach-Object {
@@ -81,7 +81,7 @@ function Get-NetworkInfo {
     }
 }
 
-# if statments for report 
+# If statments for report 
 if ($System) {
     Get-SystemInfo
 }
