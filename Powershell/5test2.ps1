@@ -3,6 +3,7 @@ param (
     [switch]$Disks,
     [switch]$Network
 )
+function systemreport {
 
 # Function to get system information 
 function Get-SystemInfo {
@@ -72,7 +73,7 @@ function Get-NetworkInfo {
 }
 
 # function to generae report
-function systemreport {
+
 if ($System) {
     Get-SystemInfo
 }
